@@ -4,15 +4,15 @@ import java.math.BigDecimal;
 
 public class Account {
 
-    private BigDecimal balance;
     private int accountId;
     private int userId;
+    private BigDecimal balance;
 
 
-    public Account(BigDecimal balance, int accountId, int userId) {
-        this.balance = balance;
+    public Account(int accountId, int userId, BigDecimal balance) {
         this.accountId = accountId;
         this.userId = userId;
+        this.balance = balance;
     }
 
     public BigDecimal getBalance() {

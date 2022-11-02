@@ -22,11 +22,11 @@ public class AccountController {
     }
 
     @GetMapping(path ="/{id}")
-    public Account getAccountById(@PathVariable int account_id) {
+    public Account getAccountById(@PathVariable(name="id")  int account_id) {
         return this.accountDao.getAccountById(account_id);
     }
     @PostMapping("")
-    public boolean create(int user_id, BigDecimal balance){
+    public boolean create(@RequestParam int user_id, @RequestParam BigDecimal balance){
         return this.accountDao.create(user_id, balance);
     }
 
