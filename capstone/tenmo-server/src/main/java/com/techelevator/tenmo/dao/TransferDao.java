@@ -9,5 +9,5 @@ public interface TransferDao {
 
     List<Transfer> getAllTransfersById(int account_id);
 
-   Transfer updateBalancesAfterTransfer(BigDecimal transferBalance, int fromAccountId, int toAccountId);
+   void updateBalancesAfterTransfer(int fromAccountId, int toAccountId, BigDecimal transferBalance);
 }

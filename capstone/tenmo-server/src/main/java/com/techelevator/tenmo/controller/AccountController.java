@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/accounts")
-@PreAuthorize("isAuthenticated()")
+@PreAuthorize("hasRole('ROLE_USER')")
 public class AccountController {
 
     private AccountDao accountDao;

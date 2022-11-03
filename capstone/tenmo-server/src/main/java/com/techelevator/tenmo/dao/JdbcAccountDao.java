@@ -31,16 +31,16 @@ public class JdbcAccountDao implements AccountDao{
         }
             return accountList;
     }
-    public Account getAccountById(int account_id){
+    public Account getAccountById(int id){
         String sql = "SELECT account_id ,user_id, balance\n" +
                 "FROM account\n" +
-                "WHERE account_id = ?;";
-        SqlRowSet results = this.jdbcTemplate.queryForRowSet(sql, account_id);
-        Account account = null;
+                "WHERE user_id = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
         if(results.next()){
-            account = this.mapAccountFromResults(results);
+            return mapAccountFromResults(results);
         }
-        return account;
+        return null;
+
     }
 
     public boolean create(int user_id, BigDecimal balance){
