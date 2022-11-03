@@ -30,16 +30,14 @@ public class JdbcTransferDao implements TransferDao{
         }
         return transferList;
     }
-    public Transfer createTransfer(BigDecimal transferBalance, int to_account_id, int from_account_id){
-        String sql = "INSERT INTO transfer(transfer_balance, to_account_id, from_account_id)\n" +
-                "VALUES(?,?,?);";
-        SqlRowSet results = this.jdbcTemplate.queryForRowSet(sql);
-        String sql2 = ""
+//    public Transfer createTransfer(BigDecimal transferBalance, int to_account_id, int from_account_id){
+//        String sql = "INSERT INTO transfer(transfer_balance, to_account_id, from_account_id)\n" +
+//                "VALUES(?,?,?);";
+//        SqlRowSet results = this.jdbcTemplate.queryForRowSet(sql);
+//        String sql2 = ""
+//
+//    }
 
-    }
-
-
-    }
 
     private Transfer mapTransferFromResults(SqlRowSet results){
         return new Transfer(
