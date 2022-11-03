@@ -4,6 +4,7 @@ import com.techelevator.tenmo.model.Transfer;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -30,13 +31,19 @@ public class JdbcTransferDao implements TransferDao{
         }
         return transferList;
     }
-//    public Transfer createTransfer(BigDecimal transferBalance, int to_account_id, int from_account_id){
-//        String sql = "INSERT INTO transfer(transfer_balance, to_account_id, from_account_id)\n" +
-//                "VALUES(?,?,?);";
-//        SqlRowSet results = this.jdbcTemplate.queryForRowSet(sql);
-//        String sql2 = ""
-//
-//    }
+
+        public Transfer updateBalancesAfterTransfer(BigDecimal transferBalance, int fromAccountId, int toAccountId) {
+            String sql = "INSERT INTO transfer (from_account_id, to_account_id, balance)\n" +
+                    "VALUES (?, ?, ?);";
+            Transfer newTransferId;
+           newTransferId = jdbcTemplate.queryForObject(sql, Transfer.class, transferBalance, fromAccountId, toAccountId);
+
+           String sql2 = "UPDATE account SET balance = balance - ? WHERE account_id = from_account_id;\n" +
+                   "UPDATE account SET balance = balance + ? WHERE account_id = to_account_id;";
+            int result = jdbcTemplate.update(sql, transferBalance, transferBalance);
+
+            return newTransferId;
+        }
 
 
     private Transfer mapTransferFromResults(SqlRowSet results){
