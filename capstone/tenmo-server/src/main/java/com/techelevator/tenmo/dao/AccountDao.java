@@ -11,6 +11,11 @@ public interface AccountDao {
 
     Account getAccountById(int account_id);
 
-    boolean create(int user_id, BigDecimal balance);
+    boolean create(int user_id, BigDecimal transferBalance);
 
+    void addToAccount(BigDecimal transferBalance, int id);
+
+    void subtractFromAccount(BigDecimal transferBalance, int id);
+
+    BigDecimal getBalance(int fromAccountId);
 }

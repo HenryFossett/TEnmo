@@ -19,10 +19,11 @@ public class JdbcTransferDao implements TransferDao{
 
 
     public List<Transfer> getAllTransfersById(int account_id){
-        String sql = "SELECT transfer_id, from_account_id, to_account_id, balance\n" +
-                "\tFROM transfer" +
+        String sql = "SELECT transfer_id, from_account_id, to_account_id, transfer_balance\n" +
+                "FROM transfer\n" +
+                "JOIN account ON transfer.from_account_id = account.account_id\n" +
                 "WHERE account_id = ?;";
-        SqlRowSet results = this.jdbcTemplate.queryForRowSet(sql);
+        SqlRowSet results = this.jdbcTemplate.queryForRowSet(sql, account_id);
         List<Transfer> transferList = new ArrayList<>();
         while(results.next()){
             Transfer t = mapTransferFromResults(results);
@@ -30,17 +31,36 @@ public class JdbcTransferDao implements TransferDao{
         }
         return transferList;
     }
-
-    @Override
-    public void updateBalancesAfterTransfer(int fromAccountId, int toAccountId, BigDecimal transferBalance) {
-            String sql = "INSERT INTO transfer (from_account_id, to_account_id, transfer_balance)\n" +
-                    "VALUES (?, ?, ?);";
-           jdbcTemplate.update(sql, fromAccountId, toAccountId, transferBalance);
-           String sql2 = "UPDATE account SET balance = balance - ? WHERE account_id = ?;";
-           jdbcTemplate.update(sql2,transferBalance, fromAccountId);
-           String sql3 ="UPDATE account SET balance = balance + ? WHERE account_id = ?;";
-           jdbcTemplate.update(sql3,transferBalance, toAccountId);
+    public Transfer getTransferByTransferId(int transfer_id){
+        String sql = "SELECT from_account_id, to_account_id, transfer_balance\n"+
+                "FROM transfer\n" +
+                "WHERE transfer_id = ?;";
+        Transfer transfer = null;
+        SqlRowSet results = this.jdbcTemplate.queryForRowSet(sql, transfer_id);
+        if(results.next()){
+            transfer = mapTransferFromResults(results);
         }
+        return transfer;
+    }
+
+//    @Override
+//    public void updateBalancesAfterTransfer(int fromAccountId, int toAccountId, BigDecimal transferBalance) {
+//            String sql = "INSERT INTO transfer (from_account_id, to_account_id, transfer_balance)\n" +
+//                    "VALUES (?, ?, ?);";
+//           jdbcTemplate.update(sql, fromAccountId, toAccountId, transferBalance);
+//           String sql2 = "UPDATE account SET transfer_balance = transfer_balance - ? WHERE account_id = ?;";
+//           jdbcTemplate.update(sql2,transferBalance, fromAccountId);
+//           String sql3 ="UPDATE account SET transfer_balance = transfer_balance + ? WHERE account_id = ?;";
+//           jdbcTemplate.update(sql3,transferBalance, toAccountId);
+//        }
+
+
+   public String sendTransfer(int fromAccountId, int toAccountId, BigDecimal transferBalance){
+        String sql = "INSERT INTO transfer (from_account_id, to_account_id, transfer_balance)\n" +
+                "VALUES (?, ?, ?);";
+        jdbcTemplate.update(sql, fromAccountId, toAccountId, transferBalance);
+        return "Transfer Complete";
+   }
 
 
     private Transfer mapTransferFromResults(SqlRowSet results){

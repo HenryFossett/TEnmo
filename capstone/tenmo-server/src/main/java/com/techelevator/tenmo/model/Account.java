@@ -9,6 +9,7 @@ public class Account {
     private BigDecimal balance;
 
 
+
     public Account(int accountId, int userId, BigDecimal balance) {
         this.accountId = accountId;
         this.userId = userId;
@@ -38,4 +39,6 @@ public class Account {
     public void setUserId(int userId) {
         this.userId = userId;
     }
+
 }
+

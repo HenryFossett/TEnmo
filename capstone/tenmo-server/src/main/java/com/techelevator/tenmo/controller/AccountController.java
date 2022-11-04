@@ -15,6 +15,8 @@ public class AccountController {
 
     private AccountDao accountDao;
 
+
+
     public AccountController(AccountDao accountDao){
         this.accountDao = accountDao;
     }
@@ -27,6 +29,11 @@ public class AccountController {
     public Account getAccountById(@PathVariable(name="id")  int account_id) {
         return this.accountDao.getAccountById(account_id);
     }
+//    @PreAuthorize("permitAll")
+//    @GetMapping(path = "/{account_id}/balance")
+//    public int getBalance(@RequestParam int account_id){
+//        return this.accountDao.getBalance(account_id);
+//    }
     @PostMapping("")
     public boolean create(@RequestParam int user_id, @RequestParam BigDecimal balance){
         return this.accountDao.create(user_id, balance);
