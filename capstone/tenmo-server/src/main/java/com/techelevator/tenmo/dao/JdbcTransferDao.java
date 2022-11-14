@@ -18,13 +18,12 @@ public class JdbcTransferDao implements TransferDao{
     }
 
 
-    public List<Transfer> getAllTransfersById(int account_id){
+    public List<Transfer> getAllTransfersById(int fromAccountId){
+        List<Transfer> transferList = new ArrayList<>();
         String sql = "SELECT transfer_id, from_account_id, to_account_id, transfer_balance\n" +
                 "FROM transfer\n" +
-                "JOIN account ON transfer.from_account_id = account.account_id\n" +
-                "WHERE account_id = ?;";
-        SqlRowSet results = this.jdbcTemplate.queryForRowSet(sql, account_id);
-        List<Transfer> transferList = new ArrayList<>();
+                "WHERE from_account_id = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, fromAccountId);
         while(results.next()){
             Transfer t = mapTransferFromResults(results);
             transferList.add(t);
@@ -36,7 +35,7 @@ public class JdbcTransferDao implements TransferDao{
                 "FROM transfer\n" +
                 "WHERE transfer_id = ?;";
         Transfer transfer = null;
-        SqlRowSet results = this.jdbcTemplate.queryForRowSet(sql, transfer_id);
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transfer_id);
         if(results.next()){
             transfer = mapTransferFromResults(results);
         }

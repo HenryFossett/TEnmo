@@ -61,14 +61,14 @@ public class TransferController {
         transferDao.sendTransfer(fromAccountId, toAccountId, transferBalance);
         return "Transaction complete!";
     }
-//    @PreAuthorize("permitAll")
-//    @RequestMapping(path = "/transfers/{account_id}", method = RequestMethod.GET)
-//    public List<Transfer> getAllTransfersById(@RequestParam int account_id){
-//        return this.transferDao.getAllTransfersById(account_id);
-//    }
-//    @PreAuthorize("permitAll")
-//    @RequestMapping(path = "transfers/{transfer_id}", method = RequestMethod.GET)
-//    public Transfer getTransferByTransferId(@RequestParam int transfer_id){
-//        return this.transferDao.getTransferByTransferId(transfer_id);
-//    }
+    @PreAuthorize("permitAll")
+    @RequestMapping(path = "/transfers/{fromAccountId}", method = RequestMethod.GET)
+    public List<Transfer> getAllTransfersById(@RequestParam int fromAccountId){
+        return this.transferDao.getAllTransfersById(fromAccountId);
+    }
+    @PreAuthorize("permitAll")
+    @RequestMapping(path = "transfers/{transfer_id}", method = RequestMethod.GET)
+    public Transfer getTransferByTransferId(@RequestParam int transfer_id){
+        return this.transferDao.getTransferByTransferId(transfer_id);
+    }
 }
